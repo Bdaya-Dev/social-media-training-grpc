@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package bdaya.social_training.v1;
+
+import "bdaya/social_training/v1/common.proto";
+import "bdaya/social_training/v1/post.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+
+service PostService {
+  rpc ListPosts(ListPostsRequest) returns (ListPostsResponse) {
+    option (google.api.http) = {get: "/api/v1/posts"};
+  }
+
+  rpc GetPost(GetPostRequest) returns (GetPostResponse) {
+    option (google.api.http) = {get: "/api/v1/posts/{id}"};
+  }
+
+  rpc CreatePost(CreatePostRequest) returns (CreatePostResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/posts"
+      body: "*"
+    };
+  }
+
+  rpc UpdatePost(UpdatePostRequest) returns (UpdatePostResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/posts/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeletePost(DeletePostRequest) returns (DeletePostResponse) {
+    option (google.api.http) = {delete: "/api/v1/posts/{id}"};
+  }
+}
+
+// List
+message ListPostsRequest {
+  InfiniteScrollPaginationInfo pagination = 1;
+  ListPostsFilter filter = 2;
+  ListPostsSorting sort = 3;
+}
+
+message ListPostsFilter {
+  repeated string user_ids = 1;
+  DateFilter creation_time = 2;
+  PostReviewStatus review_status = 3;
+}
+message ListPostsSorting {
+  oneof sort_property {
+    SortDirection creation_time = 1;
+    SortDirection latest_comment_time = 2;
+  }
+}
+
+message ListPostsResponse {
+  // The field name should match the noun "Post" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Post posts = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  google.protobuf.StringValue next_page_token = 2;
+}
+// Get
+
+message GetPostRequest {
+  // The field will contain name of the resource requested.
+  string id = 1;
+}
+
+message GetPostResponse {
+  Post result = 1;
+}
+
+// Create
+message CreatePostRequest {}
+message CreatePostResponse {
+  Post result = 1;
+}
+
+// Update
+message UpdatePostRequest {
+  string id = 1;
+}
+message UpdatePostResponse {
+  Post result = 1;
+}
+
+// Delete
+message DeletePostRequest {
+  string id = 1;
+}
+message DeletePostResponse {}

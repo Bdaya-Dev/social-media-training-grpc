@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package bdaya.social_training.v1;
+
+import "bdaya/social_training/v1/image.proto";
+import "google/protobuf/timestamp.proto";
+
+message Post {
+  string id = 1;
+  string name = 2;
+  string username = 3;
+  google.protobuf.Timestamp date = 4;
+  string post_content = 5;
+  string picture = 6;
+  uint64 likes = 7;
+  uint64 comments = 8;
+  uint64 shares = 9;
+  PostReview review = 10;
+  repeated AppImage images = 11;
+}
+
+message PostReview {
+  PostReviewStatus status = 1;
+  string review_details = 2;
+  string reviewed_by = 3;
+  google.protobuf.Timestamp reviewed_at = 4;
+}
+
+enum PostReviewStatus {
+  POST_REVIEW_STATUS_UNSPECIFIED = 0;
+  POST_REVIEW_STATUS_ACCEPTED = 1;
+  POST_REVIEW_STATUS_REJECTED = 2;
+  POST_REVIEW_STATUS_PENDING = 3;
+}
