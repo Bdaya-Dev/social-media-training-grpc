@@ -3,20 +3,22 @@ syntax = "proto3";
 package bdaya.social_training.v1;
 
 import "bdaya/social_training/v1/image.proto";
+import "bdaya/social_training/v1/user.proto";
 import "google/protobuf/timestamp.proto";
 
 message Post {
   string id = 1;
-  string name = 2;
-  string username = 3;
-  google.protobuf.Timestamp date = 4;
-  string post_content = 5;
-  string picture = 6;
-  uint64 likes = 7;
-  uint64 comments = 8;
-  uint64 shares = 9;
-  PostReview review = 10;
-  repeated AppImage images = 11;
+  UserInfo user = 2;
+  google.protobuf.Timestamp date = 3;
+  string content = 4;
+  PostStats stats = 5;
+  PostReview review = 6;
+  repeated AppImage images = 7;
+}
+message PostStats {
+  uint64 likes = 1;
+  uint64 comments = 2;
+  uint64 shares = 3;
 }
 
 message PostReview {
